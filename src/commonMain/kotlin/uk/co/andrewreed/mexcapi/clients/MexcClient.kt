@@ -1,13 +1,9 @@
-package uk.co.andrewreed.mexcapi.Client
+package uk.co.andrewreed.mexcapi.clients
 
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
-import uk.co.andrewreed.mexcapi.Models.OrderBook
-import uk.co.andrewreed.mexcapi.Models.Trade
 
 class MexcClient() {
 
@@ -23,10 +19,7 @@ class MexcClient() {
         }
     }
 
-    suspend fun orderBook(symbol: String): OrderBook =
-        ktorClient.get("$url/api/v3/depth?symbol=$symbol").body()
-
-    suspend fun trades(symbol: String): List<Trade> =
-        ktorClient.get("$url/api/v3/trades?symbol=$symbol").body()
-
+    val marketDataClient = MarketDataClient(ktorClient) { path ->
+        "$url$path"
+    }
 }

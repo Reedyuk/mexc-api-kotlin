@@ -1,4 +1,4 @@
-package uk.co.andrewreed.mexcapi.Models
+package uk.co.andrewreed.mexcapi.models
 
 import kotlinx.serialization.Serializable
 
