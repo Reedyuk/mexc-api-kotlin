@@ -27,6 +27,14 @@ val developerEmail: String by project
 repositories {
     google()
     mavenCentral()
+    maven {
+        name = "github"
+        url = uri("https://maven.pkg.github.com/reedyuk/mexc-api-kotlin")
+        credentials {
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+        }
+    }
 }
 
 kotlin {
