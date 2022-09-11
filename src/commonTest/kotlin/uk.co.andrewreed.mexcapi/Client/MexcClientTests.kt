@@ -12,4 +12,11 @@ class MexcClientTests {
         assertTrue(orderBook.asks.isNotEmpty())
         assertTrue(orderBook.bids.isNotEmpty())
     }
+
+    @Test
+    fun tradesTest() = runTest {
+        val trades = MexcClient().trades("BTCUSDT")
+        println(trades)
+        assertTrue(trades.isNotEmpty())
+    }
 }
