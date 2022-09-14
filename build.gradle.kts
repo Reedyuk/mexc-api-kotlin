@@ -46,13 +46,13 @@ kotlin {
             useJUnitPlatform()
         }
     }
-    js(BOTH) {
-        browser {
-            commonWebpackConfig {
-                cssSupport.enabled = true
-            }
-        }
-    }
+//    js(BOTH) {
+//        browser {
+//            commonWebpackConfig {
+//                cssSupport.enabled = true
+//            }
+//        }
+//    }
     android {
         publishLibraryVariants("release", "debug")
     }
@@ -76,6 +76,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version")
                 implementation("co.touchlab:kermit:$kermit_version")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("com.appmattus.crypto:cryptohash:0.10.1")
             }
         }
         val commonTest by getting {
@@ -89,12 +91,12 @@ kotlin {
             }
         }
         val jvmTest by getting
-        val jsMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-js:$ktor_version")
-            }
-        }
-        val jsTest by getting
+//        val jsMain by getting {
+//            dependencies {
+//                implementation("io.ktor:ktor-client-js:$ktor_version")
+//            }
+//        }
+//        val jsTest by getting
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktor_version")

@@ -5,36 +5,41 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class MexcClientTests {
+class MarketDataClientTests {
+
+    private val privateKey: String = ""
+    private val secretKey: String = ""
+
+    private val client = MexcClient(privateKey, secretKey)
 
     @Test
     fun orderbookTest() = runTest {
-        val orderBook = MexcClient().marketDataClient.orderBook("BTCUSDT")
+        val orderBook = client.marketDataClient.orderBook("BTCUSDT")
         assertTrue(orderBook.asks.isNotEmpty())
         assertTrue(orderBook.bids.isNotEmpty())
     }
 
     @Test
     fun tradesTest() = runTest {
-        val trades = MexcClient().marketDataClient.trades("BTCUSDT")
+        val trades = client.marketDataClient.trades("BTCUSDT")
         assertTrue(trades.isNotEmpty())
     }
 
     @Test
     fun historicTradesTest() = runTest {
-        val trades = MexcClient().marketDataClient.historicalTrades("BTCUSDT")
+        val trades = client.marketDataClient.historicalTrades("BTCUSDT")
         assertTrue(trades.isNotEmpty())
     }
 
     @Test
     fun averagePriceTest() = runTest {
-        val averagePrice = MexcClient().marketDataClient.averagePrice("BTCUSDT")
+        val averagePrice = client.marketDataClient.averagePrice("BTCUSDT")
         assertNotNull(averagePrice.price)
     }
 
     @Test
     fun dayTickerTest() = runTest {
-        val tickers = MexcClient().marketDataClient.dayTicker()
+        val tickers = client.marketDataClient.dayTicker()
         assertTrue(tickers.isNotEmpty())
     }
 
