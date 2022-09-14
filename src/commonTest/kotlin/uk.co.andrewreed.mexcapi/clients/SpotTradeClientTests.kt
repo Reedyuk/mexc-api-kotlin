@@ -40,4 +40,16 @@ class SpotTradeClientTests {
         println(account)
     }
 
+    @Test
+    fun createTestOrder() = runTest {
+        val order = client.spotTradeClient.createTestOrder(
+            "LUNCUSDT",
+            "BUY",
+            "LIMIT",
+            "0.001",
+            "3000"
+        )
+        println(order)
+    }
+
 }

@@ -68,4 +68,46 @@ class SpotTradeClient(
             params = mapOf("symbol" to symbol.uppercase())
         ).body()
 
+    suspend fun createOrder(symbol: String, side: String, type: String, quantity: String, price: String): JsonObject =
+        createAuthenticatedRequest(
+            path = "/api/v3/order",
+            requestMethod = HttpMethod.Post,
+            params = mapOf(
+                "symbol" to symbol.uppercase(),
+                "side" to side,
+                "type" to type,
+                "quantity" to quantity,
+                "price" to price
+            )
+        ).body()
+
+    suspend fun createTestOrder(symbol: String, side: String, type: String, quantity: String, price: String): JsonObject =
+        createAuthenticatedRequest(
+            path = "/api/v3/order/test",
+            requestMethod = HttpMethod.Post,
+            params = mapOf(
+                "symbol" to symbol.uppercase(),
+                "side" to side,
+                "type" to type,
+                "quantity" to quantity,
+                "price" to price
+            )
+        ).body()
+
+    suspend fun deleteOrder(symbol: String, orderId: String): JsonObject =
+        createAuthenticatedRequest(
+            path = "/api/v3/order",
+            requestMethod = HttpMethod.Delete,
+            params = mapOf(
+                "symbol" to symbol.uppercase(),
+                "orderId" to orderId
+            )
+        ).body()
+
+    suspend fun deleteOpenOrders(symbol: String): JsonObject =
+        createAuthenticatedRequest(
+            path = "/api/v3/openOrders",
+            requestMethod = HttpMethod.Delete,
+            params = mapOf("symbol" to symbol.uppercase())
+        ).body()
 }
