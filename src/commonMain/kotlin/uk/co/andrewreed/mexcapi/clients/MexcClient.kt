@@ -23,6 +23,10 @@ class MexcClient(privateKey: String, secretKey: String) {
         "$url$path"
     }
 
+    val etfClient = ETFClient(ktorClient) { path ->
+        "$url$path"
+    }
+
     val spotTradeClient = SpotTradeClient(privateKey, secretKey, ktorClient) { path ->
         "$url$path"
     }
