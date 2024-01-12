@@ -29,8 +29,9 @@ class MarketDataClient(private val client: HttpClient, private val buildUrl: (pa
     suspend fun aggTrades(symbol: String): List<Trade> =
         client.get(buildUrl("/api/v3/aggTrades?symbol=$symbol")).body()
 
-    suspend fun klines(symbol: String, interval: String): List<KLine> =
-        client.get(buildUrl("/api/v3/klines?symbol=$symbol&interval=$interval"))
+    suspend fun klines(symbol: String, interval: KLineInterval, startTime: Long? = null, endTime: Long? = null, limit: Int? = null): List<KLine> =
+        client.get(buildUrl(
+            "/api/v3/klines?symbol=$symbol&interval=${interval.value}${startTime?.let { "&startTime=$it" } ?: ""}${endTime?.let { "&endTime=$it" } ?: ""}${limit?.let { "&limit=$it" } ?: ""}"))
             .body<List<List<String>>>()
             .map { KLine.fromArray(it) }
 

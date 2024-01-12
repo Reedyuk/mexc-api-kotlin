@@ -9,6 +9,8 @@ import kotlinx.datetime.Clock
 import kotlinx.serialization.json.JsonObject
 import uk.co.andrewreed.mexcapi.models.MyTrade
 import uk.co.andrewreed.mexcapi.models.Order
+import uk.co.andrewreed.mexcapi.models.OrderSide
+import uk.co.andrewreed.mexcapi.models.OrderType
 import uk.co.andrewreed.mexcapi.requestParamString
 import uk.co.andrewreed.mexcapi.sign
 
@@ -18,14 +20,27 @@ class SpotTradeClient(
     private val client: HttpClient,
     private val buildUrl: (path: String) -> String
 ) {
+    /*
+    if (api_secret) {
+    let queryString = Object.keys(paramsObject).map((key) => {
+        return `${key}=${paramsObject[key]}`;
+    }).join('&');
+    console.log('queryString',queryString);
+    // queryString = "timestamp=1645522175785"
+    // const api_secret = "99d5cd6c195c4e97b3094578eaa9335c"
+    const signature = CryptoJS.HmacSHA256(queryString, api_secret).toString();
+    console.log('signature',signature)
+    pm.environment.set("signature", signature);
+}
+     */
     private fun createAuthenticatedUrl(path: String, params: Map<String, String>): String =
         Clock.System.now().toEpochMilliseconds().let { time ->
+            val queryString = "${params.requestParamString()}&timestamp=$time"
             val signature = sign(
                 secretKey,
-                time.toString(),
-                params
+                queryString
             )
-            buildUrl("$path?${params.requestParamString()}&timestamp=$time&signature=$signature")
+            buildUrl("$path?${queryString}&signature=$signature")
         }
 
     private suspend fun createAuthenticatedRequest(
@@ -68,30 +83,32 @@ class SpotTradeClient(
             params = mapOf("symbol" to symbol.uppercase())
         ).body()
 
-    suspend fun createOrder(symbol: String, side: String, type: String, quantity: String, price: String): JsonObject =
+    suspend fun createOrder(symbol: String, side: OrderSide, type: OrderType, quantity: String? = null, quoteOrderQty: String? = null, price: String? = null): Order =
         createAuthenticatedRequest(
             path = "/api/v3/order",
             requestMethod = HttpMethod.Post,
             params = mapOf(
                 "symbol" to symbol.uppercase(),
-                "side" to side,
-                "type" to type,
-                "quantity" to quantity,
-                "price" to price
+                "side" to side.name,
+                "type" to type.name
             )
+            + (quantity?.let { mapOf("quantity" to it) } ?: mapOf())
+            + (quoteOrderQty?.let { mapOf("quoteOrderQty" to it) } ?: mapOf())
+            + (price?.let { mapOf("price" to it) } ?: mapOf())
         ).body()
 
-    suspend fun createTestOrder(symbol: String, side: String, type: String, quantity: String, price: String): JsonObject =
+    suspend fun createTestOrder(symbol: String, side: OrderSide, type: OrderType, quantity: String? = null, quoteOrderQty: String? = null, price: String? = null): Order =
         createAuthenticatedRequest(
             path = "/api/v3/order/test",
             requestMethod = HttpMethod.Post,
             params = mapOf(
                 "symbol" to symbol.uppercase(),
-                "side" to side,
-                "type" to type,
-                "quantity" to quantity,
-                "price" to price
+                "side" to side.name,
+                "type" to type.name
             )
+            + (quantity?.let { mapOf("quantity" to it) } ?: mapOf())
+            + (quoteOrderQty?.let { mapOf("quoteOrderQty" to it) } ?: mapOf())
+            + (price?.let { mapOf("price" to it) } ?: mapOf())
         ).body()
 
     suspend fun deleteOrder(symbol: String, orderId: String): JsonObject =

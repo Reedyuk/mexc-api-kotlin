@@ -7,22 +7,32 @@ data class Order(
     val symbol: String,
     val orderId: String,
     val orderListId: Int,
-    val clientOrderId: String?,
+    val clientOrderId: String? = null,
     val price: String,
     val origQty: String,
-    val executedQty: String,
-    val cummulativeQuoteQty: String,
-    val status: String,
-    val timeInForce: String?,
+    val executedQty: String? = null,
+    val cummulativeQuoteQty: String? = null,
+    val status: String? = null,
+    val timeInForce: String? = null,
     val type: String,
     val side: String,
-    val stopPrice: String?,
-    val icebergQty: String?,
-    val time: String,
-    val updateTime: String,
-    val isWorking: Boolean,
-    val origQuoteOrderQty: String
+    val stopPrice: String? = null,
+    val icebergQty: String? = null,
+    val time: String? = null,
+    val updateTime: String? = null,
+    val isWorking: Boolean? = null,
+    val origQuoteOrderQty: String? = null,
+    val transactTime: String? = null
 )
+
+//symbol	Symbol
+//orderId	order id
+//orderListId	order list id
+//price	Price
+//origQty	Original order quantity
+//type	Order type
+//side	order side
+//transactTime	transactTime
 
 //{
 //        "symbol": "LUNCUSDT",

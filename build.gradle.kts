@@ -53,7 +53,7 @@ kotlin {
 //            }
 //        }
 //    }
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
     }
     ios("ios") {
@@ -102,7 +102,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-android:$ktor_version")
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation("junit:junit:4.13.2")
             }

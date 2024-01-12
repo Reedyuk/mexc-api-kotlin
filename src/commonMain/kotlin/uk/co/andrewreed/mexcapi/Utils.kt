@@ -14,10 +14,9 @@ internal fun Map<String, String>.requestParamString(): String {
 
 internal fun String.urlEncode(): String = Url(this).fullPath.drop(1).replace("\\+", "%20")
 
-internal fun sign(secretKey: String, timestamp: String, params: Map<String, String>): String {
-    val str: String = (params + mapOf("timestamp" to timestamp)).requestParamString()
+internal fun sign(secretKey: String, queryString: String): String {
     val hmac = Algorithm.SHA_256.createHmac(secretKey.toByteArray())
-    hmac.update(str.toByteArray())
+    hmac.update(queryString.toByteArray())
     val signed = hmac.digest()
     return signed.toHex()
 }
